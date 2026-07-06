@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特典② 2026年最新版 MNP維持費シミュレーション</title>
+<style>
+  :root{
+    --bg:#0b0f17;
+    --bg-card:#131a26;
+    --bg-card2:#1a2333;
+    --accent:#3ea6ff;
+    --accent2:#00d4b8;
+    --warn:#ff6b6b;
+    --text:#e8edf5;
+    --text-dim:#9fb0c3;
+    --border:#233046;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#070a10,#0b0f17 400px);
+    color:var(--text);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    line-height:1.8;
+    padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px;}
+  header.hero{
+    background:radial-gradient(circle at 20% 20%, rgba(62,166,255,.25), transparent 60%),
+               radial-gradient(circle at 80% 0%, rgba(0,212,184,.2), transparent 50%),
+               #0b0f17;
+    padding:60px 20px 40px;
+    text-align:center;
+    border-bottom:1px solid var(--border);
+  }
+  header.hero .badge{
+    display:inline-block;
+    background:var(--accent);
+    color:#04101c;
+    font-weight:700;
+    font-size:13px;
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:16px;
+    letter-spacing:.05em;
+  }
+  header.hero h1{
+    font-size:28px;
+    margin:0 0 10px;
+    line-height:1.5;
+  }
+  header.hero p{color:var(--text-dim);font-size:14px;margin:0;}
+  nav.toc{
+    max-width:860px;margin:-24px auto 40px;padding:20px 24px;
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  nav.toc h2{font-size:14px;color:var(--accent2);margin:0 0 12px;letter-spacing:.05em;}
+  nav.toc ol{margin:0;padding-left:20px;columns:2;gap:20px;font-size:13.5px;}
+  nav.toc li{margin-bottom:8px;color:var(--text-dim);}
+  nav.toc a{color:var(--text);text-decoration:none;}
+  nav.toc a:hover{color:var(--accent);}
+
+  section{margin:48px 0;}
+  section.chapter{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:32px 28px;
+  }
+  .chp-label{
+    display:inline-block;
+    font-size:12px;
+    color:var(--accent2);
+    background:rgba(0,212,184,.12);
+    border:1px solid rgba(0,212,184,.35);
+    padding:3px 10px;
+    border-radius:999px;
+    margin-bottom:10px;
+    letter-spacing:.05em;
+  }
+  h2.title{font-size:21px;margin:0 0 18px;}
+  h3{font-size:16px;color:var(--accent);margin:26px 0 10px;}
+  p{color:var(--text);font-size:15px;}
+  .lead{color:var(--text-dim);font-size:14px;}
+  ul.check li{margin-bottom:6px;}
+  .callout{
+    background:var(--bg-card2);
+    border-left:3px solid var(--accent);
+    padding:14px 16px;
+    border-radius:8px;
+    font-size:14px;
+    margin:16px 0;
+    color:var(--text-dim);
+  }
+  .callout.warn{border-color:var(--warn);}
+  .callout strong{color:var(--text);}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0;}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:center;}
+  th{background:var(--bg-card2);color:var(--accent2);font-weight:600;}
+  td.left,th.left{text-align:left;}
+  tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+
+  .badge-uq{color:#ff8a3d;font-weight:700;}
+  .badge-ym{color:#ff5c8a;font-weight:700;}
+
+  .col2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:640px){.col2{grid-template-columns:1fr;} nav.toc ol{columns:1;}}
+
+  .simcard{
+    background:var(--bg-card2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
+  }
+  .simcard h4{margin:0 0 10px;font-size:14px;}
+  .simcard .price{font-size:26px;font-weight:800;color:var(--accent);}
+  .simcard .price span{font-size:13px;color:var(--text-dim);font-weight:400;}
+
+  /* calculator */
+  .calc-box{
+    background:var(--bg-card2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px;
+    margin-top:16px;
+  }
+  .calc-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .calc-row label{font-size:14px;color:var(--text-dim);flex:1;min-width:160px;}
+  .calc-row select, .calc-row input[type=number]{
+    background:#0d1420;color:var(--text);border:1px solid var(--border);
+    border-radius:8px;padding:8px 10px;font-size:14px;min-width:140px;
+  }
+  .calc-toggle{display:flex;gap:8px;flex-wrap:wrap;}
+  .calc-toggle button{
+    background:#0d1420;color:var(--text-dim);border:1px solid var(--border);
+    border-radius:999px;padding:6px 14px;font-size:12.5px;cursor:pointer;
+  }
+  .calc-toggle button.active{background:var(--accent);color:#04101c;border-color:var(--accent);font-weight:700;}
+  .calc-result{
+    margin-top:18px;padding:18px;border-radius:12px;
+    background:linear-gradient(135deg, rgba(62,166,255,.14), rgba(0,212,184,.1));
+    border:1px solid rgba(62,166,255,.35);
+  }
+  .calc-result .big{font-size:30px;font-weight:800;color:#fff;}
+  .calc-result .small{font-size:13px;color:var(--text-dim);}
+  .calc-note{font-size:12px;color:var(--text-dim);margin-top:10px;}
+
+  .case{
+    border:1px solid var(--border);border-radius:12px;padding:18px;margin:14px 0;
+    background:var(--bg-card2);
+  }
+  .case h4{margin:0 0 6px;font-size:15px;color:var(--accent2);}
+  .case .meta{font-size:12px;color:var(--text-dim);margin-bottom:8px;}
+
+  .col-fail, .col-success{
+    border-radius:12px;padding:18px;margin:10px 0;
+  }
+  .col-fail{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.3);}
+  .col-success{background:rgba(0,212,184,.08);border:1px solid rgba(0,212,184,.3);}
+  .col-fail h4{color:var(--warn);margin:0 0 6px;}
+  .col-success h4{color:var(--accent2);margin:0 0 6px;}
+
+  .checksheet label{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:10px 0;border-bottom:1px dashed var(--border);
+    font-size:14px;cursor:pointer;
+  }
+  .checksheet input{margin-top:4px;width:18px;height:18px;accent-color:var(--accent);}
+  #progress-wrap{
+    position:sticky;top:0;background:var(--bg-card2);border-radius:10px;
+    padding:10px 14px;margin-bottom:14px;font-size:13px;
+    border:1px solid var(--border);
+  }
+  #progress-bar-outer{height:8px;background:#0d1420;border-radius:99px;margin-top:6px;overflow:hidden;}
+  #progress-bar-inner{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s;}
+
+  .column-box{
+    border:1px dashed var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin:14px 0;
+    background:rgba(255,255,255,.02);
+  }
+  .column-box .tag{font-size:11px;color:var(--accent);letter-spacing:.05em;}
+  .column-box h4{margin:6px 0 8px;font-size:14.5px;}
+
+  footer{
+    text-align:center;color:var(--text-dim);font-size:12.5px;margin-top:60px;padding:0 20px;
+  }
+  .f1{color:var(--accent2);font-weight:700;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="badge">特典② FILE</div>
+  <h1>2026年最新版<br>MNP維持費シミュレーション</h1>
+  <p>キャリア・サブブランド・MVNO、結局どれが一番残るのか。数字で決着つけよう🏁</p>
+</header>
+
+<nav class="toc">
+  <h2>📖 目次</h2>
+  <ol>
+    <li><a href="#intro">はじめに</a></li>
+    <li><a href="#ch1">Chapter1｜通信費で差がつく本当の理由</a></li>
+    <li><a href="#ch2">Chapter2｜キャリア・サブブランド・MVNOの違い</a></li>
+    <li><a href="#ch3">Chapter3｜家族4回線シミュレーション</a></li>
+    <li><a href="#ch4">Chapter4｜維持費計算シート</a></li>
+    <li><a href="#ch5">Chapter5｜ケーススタディ</a></li>
+    <li><a href="#columns">コラム×5</a></li>
+    <li><a href="#fail">失敗例</a></li>
+    <li><a href="#success">成功例</a></li>
+    <li><a href="#checksheet">チェックシート</a></li>
+    <li><a href="#matome">まとめ</a></li>
+  </ol>
+</nav>
+
+<div class="wrap">
+
+<!-- はじめに -->
+<section class="chapter" id="intro">
+  <div class="chp-label">はじめに</div>
+  <h2 class="title">「なんとなく大手キャリア」が一番損してる🙅‍♂️</h2>
+  <p>やっぴ〜です。この特典②は、前回の「MNP完全攻略」を読んでくれた人向けの実践編。<br>
+  結論から言うと、<strong>家族4回線を大手キャリアからサブブランド／MVNOに動かすだけで、年間で6万〜12万円くらい変わる</strong>のが今のリアル。これはもう感覚じゃなくて計算の話。</p>
+  <div class="callout">
+    <strong>この特典で手に入るもの</strong>
+    <ul class="check">
+      <li>キャリア／サブブランド／MVNOの「本当の違い」が数字で分かる</li>
+      <li>家族4回線での具体的な乗り換えシミュレーション</li>
+      <li>自分の維持費を今すぐ計算できるツール（Chapter4）</li>
+    </ul>
+  </div>
+  <p class="lead">※本特典に記載の料金は2026年7月時点の公表情報をベースにしています。キャンペーンや料金改定は頻繁にあるので、契約前に必ず公式サイトで最新価格を確認してね。</p>
+</section>
+
+<!-- Chapter1 -->
+<section class="chapter" id="ch1">
+  <div class="chp-label">Chapter 1</div>
+  <h2 class="title">通信費で差がつく本当の理由</h2>
+  <p>同じ「スマホ代」でも、人によって月3,000円の人もいれば月8,000円の人もいる。差がつく理由は主に3つ。</p>
+
+  <h3>① 「回線」と「割引条件」を分けて考えてない</h3>
+  <p>大手キャリアもサブブランドも、実は同じ回線を使ってることが多い（例：UQモバイルはau回線、Y!mobileはソフトバンク回線）。<strong>電波の質は変わらないのに、料金体系と割引の仕組みが違うだけ</strong>で数千円差がつく。ここを理解してないと「サブブランドは電波が悪い」という古い思い込みのまま高い方を払い続けることになる。</p>
+
+  <h3>② 「割引前の基本料金」で比較して損してる</h3>
+  <p>とくとくプラン2もシンプル3も、割引を全部適用した後の価格で語られがちだけど、割引なしだと普通に高い。自分が「どの割引を使えるか」を先に確認しないと、広告の最安値と自分の請求額がズレて後悔するパターンが多い。</p>
+
+  <h3>③ 「家族で分散管理」してるから合計額が見えてない</h3>
+  <p>家族4人がバラバラの支払い方法・バラバラのキャリアだと、合計でいくら払ってるか誰も把握してない。ここを1回まとめて計算するだけで「え、こんなに払ってたの」ってなるのがあるある。</p>
+
+  <div class="callout warn">
+    <strong>ポイント：</strong>比較すべきは「基本料金」じゃなくて「自分の家庭が実際に使える割引を全部乗せた後の実質月額」。ここがブレると、どんなシミュレーションも机上の空論になる。
+  </div>
+</section>
+
+<!-- Chapter2 -->
+<section class="chapter" id="ch2">
+  <div class="chp-label">Chapter 2</div>
+  <h2 class="title">キャリア・サブブランド・MVNOの違い</h2>
+  <p>ざっくり3層構造になってる。まずここを整理しよう。</p>
+
+  <table>
+    <tr><th class="left">区分</th><th>代表例</th><th>回線品質</th><th>価格帯目安</th><th>向いている人</th></tr>
+    <tr><td class="left">大手キャリア</td><td>docomo/au/SoftBank</td><td>◎ 最優先</td><td>高め（無制限プラン中心）</td><td>店舗サポート重視・法人利用</td></tr>
+    <tr><td class="left">サブブランド</td><td class="badge-uq">UQ mobile</td><td>◎ 親回線とほぼ同等</td><td>中（割引適用で下がる）</td><td>データ5〜30GBで割引条件が揃う人</td></tr>
+    <tr><td class="left">サブブランド</td><td class="badge-ym">Y!mobile</td><td>◎ 親回線とほぼ同等</td><td>中（割引適用で下がる）</td><td>PayPay経済圏・光回線とセットの人</td></tr>
+    <tr><td class="left">MVNO(格安SIM)</td><td>mineo/IIJmio等</td><td>○ 時間帯で混雑あり</td><td>安い</td><td>データ少なめ・価格最優先の人</td></tr>
+  </table>
+
+  <h3>サブブランド2社の最新プラン比較（2026年7月時点）</h3>
+  <div class="col2">
+    <div class="simcard">
+      <h4 class="badge-uq">UQ mobile｜トクトクプラン2</h4>
+      <p class="price">2,948<span>円〜（5GB以下・割引なし）</span></p>
+      <p class="lead">30GBまで段階制で最大4,048円。自宅セット割＋au PAYカード支払い割の両方を適用すると、5GB以下1,628円／30GB利用時2,728円まで下がる。</p>
+      <ul class="check">
+        <li>データ繰り越しあり（上限なし）</li>
+        <li>60歳以上通話割で通話オプション無料＋1,100円引きの制度あり</li>
+        <li>自宅セット割と家族セット割は併用不可（自宅セット割優先）</li>
+      </ul>
+    </div>
+    <div class="simcard">
+      <h4 class="badge-ym">Y!mobile｜シンプル3</h4>
+      <p class="price">3,278<span>円〜（S/5GB・2026年6月改定後の目安）</span></p>
+      <p class="lead">M(30GB)は4,378円前後、L(35GB+10分かけ放題)は5,478円前後が基本料の目安。PayPayカードゴールド割（-770円）＋おうち割光セット（-1,650円）を両方適用できると大きく下がる。</p>
+      <ul class="check">
+        <li>PayPayカードゴールドを持ってないと割引額が小さくなる（通常カードは-330円のみ）</li>
+        <li>2026年7月以降の新規契約は12ヶ月以内解約で契約解除料が発生</li>
+        <li>光回線とセットを組める家庭は特に有利</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead">推測ですが、料金改定のタイミングによって数百円単位で前後するので、契約直前に必ず公式サイトの最新表示額を確認するのが安全。</p>
+</section>
+
+<!-- Chapter3 -->
+<section class="chapter" id="ch3">
+  <div class="chp-label">Chapter 3</div>
+  <h2 class="title">家族4回線シミュレーション</h2>
+  <p>ここが本編。家族4人（夫婦＋子2人、データ使用量に差があるパターン）で、大手キャリア継続 vs UQモバイル・トクトクプラン2 vs Y!mobile・シンプル3 に分けて比較する。</p>
+
+  <h3>前提条件</h3>
+  <ul class="check">
+    <li>父：月20〜30GB使用（テザリングあり）</li>
+    <li>母：月5GB以下（LINE・SNS中心）</li>
+    <li>子2人：月5GB以下×2（学生・格安重視）</li>
+    <li>自宅は光回線あり（セット割が使える前提）</li>
+  </ul>
+
+  <table>
+    <tr><th class="left">パターン</th><th>父(20-30GB)</th><th>母(5GB)</th><th>子(5GB)×2</th><th>4人合計/月</th><th>年間</th></tr>
+    <tr><td class="left">大手キャリア継続（割引後想定）</td><td>7,000円</td><td>5,000円</td><td>10,000円</td><td>22,000円</td><td>264,000円</td></tr>
+    <tr><td class="left"><span class="badge-uq">UQ トクトクプラン2</span>（自宅セット割＋auPAYカード割）</td><td>2,728円</td><td>1,628円</td><td>3,256円</td><td>7,612円</td><td>91,344円</td></tr>
+    <tr><td class="left"><span class="badge-ym">Y!mobile シンプル3</span>（おうち割光セットA＋PayPayカードゴールド割）</td><td>4,378円(M)</td><td>1,858円前後(S)</td><td>3,716円前後</td><td>9,952円前後</td><td>119,424円前後</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>読み方のコツ：</strong>UQは「自宅セット割」を1回線にしか使えない仕組みじゃなく回線ごとに条件を満たせば適用できる／Y!mobileは「PayPayカードゴールド」を持ってるかどうかで割引額が-770円か-330円かに分かれるので、家族全体でどのカードを使うか先に決めるのが節約の分かれ目。
+  </div>
+  <p class="lead">推測ですが、Y!mobileはPayPayカードゴールドの年会費（11,000円/年）も加味すると、通常カードで運用する家庭ではUQとの差がさらに開きやすい。逆にPayPay経済圏をがっつり使ってるならゴールドの年会費は他の還元で回収できるケースもある。</p>
+
+  <h3>結論</h3>
+  <p>大手キャリア継続と比べると、どちらのサブブランドに乗り換えても<strong>年間10万円以上の差</strong>が出やすい。UQとY!mobileのどちらが得かは「自宅の回線」と「持っているカード」で決まるので、次のChapter4で自分の条件を入れて計算してみてね。</p>
+</section>
+
+<!-- Chapter4 計算シート -->
+<section class="chapter" id="ch4">
+  <div class="chp-label">Chapter 4</div>
+  <h2 class="title">維持費計算シート（インタラクティブ）</h2>
+  <p>自分の使用量と割引条件を選んで、UQ／Y!mobileそれぞれの実質月額をざっくり試算してみよう。</p>
+
+  <div class="calc-box">
+    <div class="calc-row">
+      <label>データ使用量の目安</label>
+      <select id="dataUsage">
+        <option value="5">〜5GB</option>
+        <option value="30" selected>〜30GB</option>
+        <option value="35">〜35GB＋10分かけ放題</option>
+      </select>
+    </div>
+    <div class="calc-row">
+      <label>自宅に光回線 or 対象インターネットあり</label>
+      <div class="calc-toggle" id="homeSetToggle">
+        <button data-val="1" class="active">あり</button>
+        <button data-val="0">なし</button>
+      </div>
+    </div>
+    <div class="calc-row">
+      <label>Y!mobile比較用：PayPayカードゴールド保有</label>
+      <div class="calc-toggle" id="paypayToggle">
+        <button data-val="gold" class="active">ゴールド</button>
+        <button data-val="normal">通常カード</button>
+        <button data-val="none">持ってない</button>
+      </div>
+    </div>
+    <div class="calc-row">
+      <label>回線数</label>
+      <input type="number" id="lineCount" value="1" min="1" max="10">
+    </div>
+
+    <div class="calc-result" id="calcResult">
+      <div class="small">条件を選ぶと自動計算されます</div>
+    </div>
+    <p class="calc-note">※2026年7月時点の公開情報をもとにした概算です。実際の請求額はキャンペーン・端末購入・オプション加入状況で変動します。契約前に公式シミュレーターで最終確認してください。</p>
+  </div>
+</section>
+
+<!-- Chapter5 ケーススタディ -->
+<section class="chapter" id="ch5">
+  <div class="chp-label">Chapter 5</div>
+  <h2 class="title">ケーススタディ</h2>
+
+  <div class="case">
+    <h4>Case1｜50代夫婦・データ少なめ・自宅光回線あり</h4>
+    <div class="meta">大手キャリア(2回線) → UQトクトクプラン2</div>
+    <p>2人とも月5GB以下の利用。自宅セット割＋auPAYカード支払い割を2回線とも適用し、月額1,628円×2＝3,256円に。大手キャリア時代は2人で1万円前後だったので、<strong>年間8万円前後の削減</strong>。60歳以上通話割も併用でき、電話中心の使い方でも安心という結果に。</p>
+  </div>
+
+  <div class="case">
+    <h4>Case2｜共働き夫婦＋高校生2人・PayPay経済圏</h4>
+    <div class="meta">大手キャリア(4回線) → Y!mobileシンプル3</div>
+    <p>普段からPayPay決済メインの家庭。PayPayカードゴールドを新規発行し、おうち割光セットAと併用。父はM(30GB)、他3人はS(5GB)で組んだ結果、4人合計で月1万円弱に。年会費11,000円を差し引いても、大手キャリア継続よりトータルで得という試算に。</p>
+  </div>
+
+  <div class="case">
+    <h4>Case3｜一人暮らし・データ多め・自宅回線なし</h4>
+    <div class="meta">大手キャリア → UQ・Y!mobileどちらも検討したケース</div>
+    <p>自宅セット割・おうち割光セットが使えない条件だと、両社とも割引前基本料金に近い金額になり差が縮まる。このケースでは<strong>データ無制限プランを持つ他社比較も含めて再検討</strong>する方が最終的に満足度が高かった。</p>
+  </div>
+</section>
+
+<!-- コラム -->
+<section id="columns">
+  <h2 class="title" style="padding-left:4px;">📝 コラム×5</h2>
+
+  <div class="column-box">
+    <span class="tag">COLUMN 01</span>
+    <h4>「安いから」だけで選ぶと後悔する理由</h4>
+    <p>維持費だけ見て決めると、家族の中で1人だけ電波が合わずストレスを抱えるケースがある。契約前に実際の使用エリアでの評判を確認するひと手間が、結果的に一番のコスパになる。</p>
+  </div>
+  <div class="column-box">
+    <span class="tag">COLUMN 02</span>
+    <h4>セット割は「早い者勝ち」の仕組みがある</h4>
+    <p>自宅セット割や家族セット割は、条件を満たした月からの適用になることが多く、月末時点の状態で判定される場合もある。乗り換え月のタイミング次第で1ヶ月分の割引を取りこぼすことがあるので要注意。</p>
+  </div>
+  <div class="column-box">
+    <span class="tag">COLUMN 03</span>
+    <h4>契約解除料の新設トレンドに注意</h4>
+    <p>短期解約への対策として、新規契約から一定期間内の解約に解除料を設定する動きが広がっている。「とりあえず乗り換えてダメならまた戻す」という発想が通用しにくくなってきているので、事前のリサーチがより重要に。</p>
+  </div>
+  <div class="column-box">
+    <span class="tag">COLUMN 04</span>
+    <h4>ポイント経済圏との相性で最終判断が変わる</h4>
+    <p>通信費単体で比較するとA社が安くても、日常の買い物でのポイント還元まで含めるとB社の方が家計全体では得ということがよくある。通信費は「単体」ではなく「家計全体のポートフォリオ」で見るのが本質。</p>
+  </div>
+  <div class="column-box">
+    <span class="tag">COLUMN 05</span>
+    <h4>料金改定は年に1回は起きるものと考える</h4>
+    <p>ここ数年、サブブランド各社は年1回程度のペースで料金や割引条件を見直している。一度契約したら終わりではなく、半年〜1年に一度は「今のプランが今も最適か」を見直す習慣をつけると損をしない。</p>
+  </div>
+</section>
+
+<!-- 失敗例・成功例 -->
+<section class="chapter" id="fail">
+  <div class="chp-label">失敗例 / 成功例</div>
+  <h2 class="title">やりがちな失敗と、うまくいったパターン</h2>
+
+  <div class="col-fail">
+    <h4>❌ 失敗①：割引条件を確認せずに乗り換えて基本料金のまま払い続けた</h4>
+    <p>「安いって聞いたから」で契約したものの、自宅セット割の申請を忘れていて、数ヶ月間割引前の金額を払い続けていた。</p>
+  </div>
+  <div class="col-fail">
+    <h4>❌ 失敗②：家族割と自宅セット割を両方使えると思い込んでいた</h4>
+    <p>UQでは自宅セット割と家族セット割は併用不可（自宅セット割が優先）。両方適用されると思い込んで予算を組んでしまい、想定より高くなった。</p>
+  </div>
+  <div class="col-fail">
+    <h4>❌ 失敗③：解約金の新ルールを知らずに短期解約した</h4>
+    <p>「気に入らなければすぐ戻せる」という以前の感覚のまま契約し、12ヶ月以内の解約で想定外の解除料が発生した。</p>
+  </div>
+
+  <div class="col-success" id="success">
+    <h4>⭕ 成功①：家族全員の使用量を1ヶ月計測してから契約先を決めた</h4>
+    <p>スマホの設定画面でデータ使用量を1ヶ月分記録してからプランを選定。過不足のないプランで無駄なく維持費を下げられた。</p>
+  </div>
+  <div class="col-success">
+    <h4>⭕ 成功②：カードとセット割の組み合わせを先に確定してから乗り換えた</h4>
+    <p>PayPayカードゴールドの発行タイミングと乗り換えタイミングを合わせたことで、初月から最大割引を適用できた。</p>
+  </div>
+  <div class="col-success">
+    <h4>⭕ 成功③：半年ごとに料金プランを見直すルールを作った</h4>
+    <p>カレンダーに「通信費見直し日」を設定し、料金改定や新プランの情報が出るたびにすぐ気づける体制にした結果、値上げの影響を最小限に抑えられている。</p>
+  </div>
+</section>
+
+<!-- チェックシート -->
+<section class="chapter" id="checksheet">
+  <div class="chp-label">チェックシート</div>
+  <h2 class="title">乗り換え前セルフチェック</h2>
+  <div id="progress-wrap">
+    進捗：<span id="progress-text">0/12</span>
+    <div id="progress-bar-outer"><div id="progress-bar-inner"></div></div>
+  </div>
+  <div class="checksheet" id="checklist">
+    <label><input type="checkbox">直近1〜3ヶ月のデータ使用量を家族全員分確認した</label>
+    <label><input type="checkbox">自宅の光回線・電気サービスがセット割の対象か確認した</label>
+    <label><input type="checkbox">使う予定の支払いカードの割引条件（ゴールド/通常）を確認した</label>
+    <label><input type="checkbox">自宅セット割と家族セット割、どちらが有利か計算した</label>
+    <label><input type="checkbox">契約解除料の発生条件（期間・金額）を確認した</label>
+    <label><input type="checkbox">MNP予約番号／転出手続きの流れを事前に確認した</label>
+    <label><input type="checkbox">現在の端末がSIMフリー、または動作対応機種か確認した</label>
+    <label><input type="checkbox">乗り換え月のタイミング（割引適用月）を確認した</label>
+    <label><input type="checkbox">家族分の契約をまとめて申し込むか個別にするか決めた</label>
+    <label><input type="checkbox">キャンペーン・クーポンの適用条件と期限を確認した</label>
+    <label><input type="checkbox">Chapter4の計算シートで実質月額をシミュレーションした</label>
+    <label><input type="checkbox">乗り換え後半年〜1年での見直し予定日を決めた</label>
+  </div>
+</section>
+
+<!-- まとめ -->
+<section class="chapter" id="matome">
+  <div class="chp-label">まとめ</div>
+  <h2 class="title">維持費は「見直すだけ」で数万円変わる🏁</h2>
+  <p>通信費って、一度契約すると見直さない人がほとんど。でも今回見てきた通り、<strong>同じ使い方でもプランと割引の組み合わせ次第で年間数万〜十数万円変わる</strong>のがこの業界のリアル。</p>
+  <ul class="check">
+    <li>比較は「割引後の実質月額」で行う</li>
+    <li>自宅セット割・家族割・カード割の組み合わせを先に確認する</li>
+    <li>Chapter4のシートで自分の条件に当てはめて計算する</li>
+    <li>半年〜1年に一度は見直す習慣をつける</li>
+  </ul>
+  <p>まずは今日、家族のデータ使用量を確認するところから始めよう。それだけで次の一手が見えてくるはず。</p>
+</section>
+
+</div>
+
+<footer>
+  <p><span class="f1">やっぴ〜流 特典②</span>｜2026年最新版 MNP維持費シミュレーション</p>
+  <p>掲載の料金・条件は2026年7月時点の公開情報に基づく概算です。最新情報は各社公式サイトをご確認ください。</p>
+</footer>
+
+<script>
+  // チェックシート進捗
+  const checklist = document.querySelectorAll('#checklist input[type=checkbox]');
+  const progressText = document.getElementById('progress-text');
+  const progressBar = document.getElementById('progress-bar-inner');
+  function updateProgress(){
+    const total = checklist.length;
+    const checked = Array.from(checklist).filter(c=>c.checked).length;
+    progressText.textContent = checked + '/' + total;
+    progressBar.style.width = (checked/total*100) + '%';
+  }
+  checklist.forEach(c=>c.addEventListener('change', updateProgress));
+  updateProgress();
+
+  // トグルボタン共通処理
+  function setupToggle(id){
+    const el = document.getElementById(id);
+    const btns = el.querySelectorAll('button');
+    btns.forEach(b=>{
+      b.addEventListener('click', ()=>{
+        btns.forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        calc();
+      });
+    });
+  }
+  setupToggle('homeSetToggle');
+  setupToggle('paypayToggle');
+
+  document.getElementById('dataUsage').addEventListener('change', calc);
+  document.getElementById('lineCount').addEventListener('input', calc);
+
+  function getActiveVal(id){
+    return document.querySelector('#'+id+' button.active').dataset.val;
+  }
+
+  function calc(){
+    const usage = document.getElementById('dataUsage').value; // "5","30","35"
+    const home = getActiveVal('homeSetToggle'); // "1" or "0"
+    const paypay = getActiveVal('paypayToggle'); // gold/normal/none
+    const lines = Math.max(1, parseInt(document.getElementById('lineCount').value || '1', 10));
+
+    // UQ トクトクプラン2 概算（税込）
+    let uqBase, uqDiscounted;
+    if(usage === '5'){ uqBase = 2948; uqDiscounted = home==='1' ? 1628 : 2728; }
+    else if(usage === '30'){ uqBase = 4048; uqDiscounted = home==='1' ? 2728 : 3828; }
+    else { uqBase = 4048; uqDiscounted = home==='1' ? 2728 : 3828; } // UQに35GB専用はないため30GB上限で近似
+
+    // Y!mobile シンプル3 概算（税込・2026年6月改定後の目安）
+    let ymBase;
+    if(usage === '5') ymBase = 3278;
+    else if(usage === '30') ymBase = 4378;
+    else ymBase = 5478;
+
+    let paypayDiscount = 0;
+    if(paypay === 'gold') paypayDiscount = 770;
+    else if(paypay === 'normal') paypayDiscount = 330;
+    const homeDiscountYm = home === '1' ? 1650 : 0;
+    let ymDiscounted = ymBase - paypayDiscount - homeDiscountYm;
+    if(ymDiscounted < 858) ymDiscounted = 858; // 下限の目安
+
+    const uqTotal = uqDiscounted * lines;
+    const ymTotal = ymDiscounted * lines;
+    const uqYear = uqTotal * 12;
+    const ymYear = ymTotal * 12;
+
+    const cheaper = uqTotal <= ymTotal ? 'UQ mobile（トクトクプラン2）' : 'Y!mobile（シンプル3）';
+    const diff = Math.abs(uqTotal - ymTotal);
+
+    document.getElementById('calcResult').innerHTML = `
+      <div class="small">回線数 ${lines} 回線での実質月額（概算・税込）</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:8px;">
+        <div>
+          <div class="small badge-uq">UQ トクトクプラン2</div>
+          <div class="big">${uqTotal.toLocaleString()}円<span style="font-size:13px;font-weight:400;">/月</span></div>
+          <div class="small">年間 約${uqYear.toLocaleString()}円</div>
+        </div>
+        <div>
+          <div class="small badge-ym">Y!mobile シンプル3</div>
+          <div class="big">${ymTotal.toLocaleString()}円<span style="font-size:13px;font-weight:400;">/月</span></div>
+          <div class="small">年間 約${ymYear.toLocaleString()}円</div>
+        </div>
+      </div>
+      <div class="small" style="margin-top:10px;">→ このケースでは <strong>${cheaper}</strong> の方が月${diff.toLocaleString()}円お得な計算</div>
+    `;
+  }
+  calc();
+</script>
+
+</body>
+</html>
